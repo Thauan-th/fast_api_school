@@ -18,7 +18,7 @@ def student_delete(id):
     return {"message": f"student with id:{id} was deleted"}
 
 
-resources = {
+student_resources = {
     "index": student_list,
     "show": student_search,
     "create": student_create,
