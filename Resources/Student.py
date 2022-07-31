@@ -16,3 +16,12 @@ def student_update(id, student):
 
 def student_delete(id):
     return {"message": f"student with id:{id} was deleted"}
+
+
+resources = {
+    "index": student_list,
+    "show": student_search,
+    "create": student_create,
+    "update": student_update,
+    "delete": student_delete
+}

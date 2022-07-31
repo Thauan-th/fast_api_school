@@ -1,4 +1,4 @@
-from Resources.Student import student_search, student_create, student_update, student_delete, student_list
+from Resources.Student import resources
 
 from Models.Student import Student
 
@@ -19,7 +19,7 @@ def root():
 @app.get('/users', status_code=status.HTTP_200_OK)
 def all_users():
     try:
-        return student_list()
+        return resources["index"]()
     except Exception:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Bad Request")
@@ -28,7 +28,7 @@ def all_users():
 @app.get('/users/{id}', status_code=status.HTTP_200_OK)
 def find_user(id: int = Path(default=None, title="Student ID", description="ID to find a studant")):
     try:
-        return student_search(id)
+        return resources["show"](id)
     except Exception:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Bad Request")
@@ -37,7 +37,7 @@ def find_user(id: int = Path(default=None, title="Student ID", description="ID t
 @app.post('/users', status_code=status.HTTP_201_CREATED)
 def new_user(student: Student = Body(default=None, title="Studant Informations", description="Studant registration information")):
     try:
-        return student_create(student)
+        return resources["create"](student)
     except Exception:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Bad Request")
@@ -47,7 +47,7 @@ def new_user(student: Student = Body(default=None, title="Studant Informations",
 def update_user(id: int = Path(default='None', title="Student ID", description="ID to find the user to be updated"),
                 student: Student = Body(default=None, title="Student Informations", description="Studant registration Informations")):
     try:
-        return student_update(id, student)
+        return resources["update"](id, student)
     except Exception:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Bad Request")
@@ -56,7 +56,7 @@ def update_user(id: int = Path(default='None', title="Student ID", description="
 @app.delete('/users/{id}', status_code=status.HTTP_200_OK)
 def delete_user(id: int = Path(default=None, title="Student ID", description="Student to be deleted")):
     try:
-        return student_delete(id)
+        return resources["delete"](id)
     except Exception:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Bad Request")
