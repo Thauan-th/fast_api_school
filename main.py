@@ -3,6 +3,7 @@ from Resources.Student import student_search, student_create, student_update, st
 from Models.Student import Student
 
 from fastapi import FastAPI
+from fastapi import Body
 from fastapi import HTTPException
 from fastapi import status
 from fastapi import Path
@@ -25,7 +26,7 @@ def all_users():
 
 
 @app.get('/users/{id}', status_code=status.HTTP_200_OK)
-def find_user(id: int):
+def find_user(id: int = Path(default=None, title="Student ID", description="ID to find a studant")):
     try:
         return student_search(id)
     except Exception:
@@ -34,7 +35,7 @@ def find_user(id: int):
 
 
 @app.post('/users', status_code=status.HTTP_201_CREATED)
-def new_user(student: Student):
+def new_user(student: Student = Body(default=None, title="Studant Informations", description="Studant registration information")):
     try:
         return student_create(student)
     except Exception:
@@ -43,7 +44,8 @@ def new_user(student: Student):
 
 
 @app.put('/users/{id}', status_code=status.HTTP_200_OK)
-def update_user(id: int, student: Student):
+def update_user(id: int = Path(default='None', title="Student ID", description="ID to find the user to be updated"),
+                student: Student = Body(default=None, title="Student Informations", description="Studant registration Informations")):
     try:
         return student_update(id, student)
     except Exception:
@@ -52,7 +54,7 @@ def update_user(id: int, student: Student):
 
 
 @app.delete('/users/{id}', status_code=status.HTTP_200_OK)
-def delete_user(id):
+def delete_user(id: int = Path(default=None, title="Student ID", description="Student to be deleted")):
     try:
         return student_delete(id)
     except Exception:
